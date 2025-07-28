@@ -1,4 +1,4 @@
-import os
+#import os
 from dotenv import load_dotenv
 import streamlit as st
 
@@ -19,10 +19,10 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 # Load environment variables
 load_dotenv()
-os.environ['HF_TOKEN'] = os.getenv("HF_TOKEN")
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
-os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
-os.environ["LANGCHAIN_TRACKING_V2"] = "true"
+#os.environ['HF_TOKEN'] = os.getenv("HF_TOKEN")
+#os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+#os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+#os.environ["LANGCHAIN_TRACKING_V2"] = "true"
 
 # Load and split documents
 loader = TextLoader("devotion.txt", encoding="utf-8")
