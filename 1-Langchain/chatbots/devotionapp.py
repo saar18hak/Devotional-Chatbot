@@ -25,7 +25,7 @@ load_dotenv()
 #os.environ["LANGCHAIN_TRACKING_V2"] = "true"
 
 # Load and split documents
-loader = TextLoader("devotion.txt", encoding="utf-8")
+loader = TextLoader("1-Langchain/chatbots/devotion.txt", encoding="utf-8")
 docs = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
 final_documents = text_splitter.split_documents(docs)
