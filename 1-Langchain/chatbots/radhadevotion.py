@@ -18,9 +18,9 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 load_dotenv()
 
 # Load HuggingFace API token
-hf_token = os.getenv("HF_TOKEN")
+# hf_token = os.getenv("HF_TOKEN")
 model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-embeddings = HuggingFaceEndpointEmbeddings(model=model, huggingfacehub_api_token=hf_token)
+embeddings = HuggingFaceEndpointEmbeddings(model=model, st.secrets["HF_TOKEN"])
 
 # # Load FAISS index
 # vectorstore = FAISS.load_local("faiss1_index", embeddings, allow_dangerous_deserialization=True)
