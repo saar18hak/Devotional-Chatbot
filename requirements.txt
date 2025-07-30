@@ -15,3 +15,6 @@ sentence-transformers
 langchain_chroma
 snscrape
 youtube-transcript-api
+pymupdf
+arxiv
+wikipedia

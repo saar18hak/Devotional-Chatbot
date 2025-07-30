@@ -16,6 +16,7 @@ from langchain_core.tracers import LangChainTracer
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 # Load environment variables
 load_dotenv()
@@ -25,15 +26,38 @@ load_dotenv()
 #os.environ["LANGCHAIN_TRACKING_V2"] = "true"
 
 # Load and split documents
-loader = TextLoader("devotion.txt", encoding="utf-8")
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
-final_documents = text_splitter.split_documents(docs)
+# loader = TextLoader("devotion.txt", encoding="utf-8")
+# docs = loader.load()
+# text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
+# final_documents = text_splitter.split_documents(docs)
+import os
+# from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 
+# os.environ['HF_TOKEN']=os.getenv("HF_TOKEN")
+hf_token = os.getenv("HF_TOKEN")
+# print(os.getenv("HF_TOKEN"))
+
+# from langchain_huggingface import HuggingFaceEmbeddings
+model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+embeddings = HuggingFaceEndpointEmbeddings(
+    model=model,
+
+    huggingfacehub_api_token=hf_token
+)
+
+# from langchain_huggingface import HuggingFaceEmbeddings
+# embeddings=HuggingFaceInferenceAPIEmbeddings(    
+#     api_key=hf_token,
+#     model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+#     api_url="https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+# )
+
+#embeddings
 # Embeddings and vectorstore
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-vectorstore = FAISS.from_documents(final_documents, embeddings)
-retriever = vectorstore.as_retriever(search_type="similarity", k=3)
+# #embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+# vectorstore = FAISS.from_documents(final_documents, embeddings)
+# retriever = vectorstore.as_retriever(search_type="similarity", k=3)
+new_df = FAISS.load_local("faiss1_index",embeddings,allow_dangerous_deserialization=True)
 
 # LLM from Groq
 groq_api_key = os.getenv("GROQ_API_KEY")
@@ -76,12 +100,12 @@ qa_prompt = ChatPromptTemplate.from_messages(
 )
 
 # Tracer (Optional, for LangSmith logging)
-tracer = LangChainTracer()
+#tracer = LangChainTracer()
 
 # RAG + History-aware chain setup
 history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
 question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
-rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain).with_config({"callbacks": [tracer]})
+rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
 # In-memory session store
 # store = {}
