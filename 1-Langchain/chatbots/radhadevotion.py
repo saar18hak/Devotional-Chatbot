@@ -20,7 +20,7 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 # Load HuggingFace API token
 # hf_token = os.getenv("HF_TOKEN")
 model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-embeddings = HuggingFaceEndpointEmbeddings(model=model,huggingfacehub_api_token=st.secrets["HF_TOKEN"])
+embeddings = HuggingFaceEndpointEmbeddings(model=model,huggingfacehub_api_token="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")
 
 # # Load FAISS index
 # vectorstore = FAISS.load_local("faiss1_index", embeddings, allow_dangerous_deserialization=True)
