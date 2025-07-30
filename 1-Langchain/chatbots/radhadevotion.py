@@ -20,7 +20,7 @@ st.title("Premanand Ji Maharaj Devotional Motivation 🌸")
 
 # 🔁 Take Hugging Face API token from user
 hf_token = st.text_input("Enter your Hugging Face API Token", type="password")
-
+st.write(hf_token)
 if hf_token:
     try:
         # 🔁 Initialize embeddings with user-provided token
