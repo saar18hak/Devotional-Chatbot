@@ -22,8 +22,14 @@ hf_token = os.getenv("HF_TOKEN")
 model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 embeddings = HuggingFaceEndpointEmbeddings(model=model, huggingfacehub_api_token=hf_token)
 
-# Load FAISS index
-vectorstore = FAISS.load_local("faiss1_index", embeddings, allow_dangerous_deserialization=True)
+# # Load FAISS index
+# vectorstore = FAISS.load_local("faiss1_index", embeddings, allow_dangerous_deserialization=True)
+
+base_path = os.path.dirname(__file__)  # directory where radhadevotion.py is located
+index_path = os.path.join(base_path, "faiss1_index")
+
+vectorstore = FAISS.load_local(index_path, embeddings, allow_dangerous_deserialization=True)
+
 retriever = vectorstore.as_retriever(search_type="similarity", k=3)
 
 # Load LLM from Groq
