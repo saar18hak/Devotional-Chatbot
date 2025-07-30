@@ -15,7 +15,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 # Load environment variables
-load_dotenv()
+# load_dotenv()
 
 # Load HuggingFace API token
 # hf_token = os.getenv("HF_TOKEN")
@@ -33,7 +33,7 @@ vectorstore = FAISS.load_local(index_path, embeddings, allow_dangerous_deseriali
 retriever = vectorstore.as_retriever(search_type="similarity", k=3)
 
 # Load LLM from Groq
-groq_api_key = os.getenv("GROQ_API_KEY")
+groq_api_key = st.secrets("GROQ_API_KEY")
 llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
 
 # Prompt Templates
